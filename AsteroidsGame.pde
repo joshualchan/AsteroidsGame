@@ -1,16 +1,110 @@
-//your variable declarations here
+//keypressed in rotate, move
+
+SpaceShip bob = new SpaceShip();
+Star [] stars;
 public void setup() 
 {
-  //your code here
+  size(1000,1000);
+  stars = new Star[200];
+  for(int i=0; i<stars.length; i++)
+  {
+    stars[i] = new Star(0,0);
+
+  }
 }
 public void draw() 
 {
-  //your code here
+  background(0);
+  for(int i=0; i<stars.length; i++)
+  {
+    stars[i].show();
+    
+  }
+
+
+  bob.show();
+
+
+}
+  public void keyPressed()
+  {
+    if(key =='2')
+    {
+      bob.setX((int)(Math.random()*800));
+
+    }
+    if(keyCode ==LEFT)
+      {
+        bob.myPointDirection= bob.myPointDirection-3;
+      }
+    if(keyCode ==RIGHT)
+      {
+        bob.myPointDirection= bob.myPointDirection+3;
+      }
+    if(keyCode ==UP)
+      {
+          
+      }
+  }
+
+class Star    
+ {     
+  private int myX, myY,col;
+
+  public Star (int x, int y)
+  {
+
+    myX = (int)(Math.random()*1000);
+    myY = (int)(Math.random()*1000);
+    col = color((int)(Math.random()*256));
+  }   
+
+
+  public void show()
+  {
+    fill(col);
+    ellipse(myX,myY,10,10);
+    
+    
+  }
 }
 class SpaceShip extends Floater  
-{   
-    //your code here
+{  
+
+  public SpaceShip()
+  {
+    corners = 6;
+ 
+    int [] xS = {20,-10,-20,-14,-20,-10};
+    int [] yS = {0,12,12,0,-12,-12};
+    xCorners = xS;
+    yCorners = yS;
+    myColor = color(255);
+    myCenterX = 500;
+    myCenterY = 500;
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;
+  }
+
+
+
+  public void setX(int x){myCenterX = x;}
+  public int getX(){return (int)myCenterX;} 
+  public void setY(int y){myCenterY= y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}  
+  public double getPointDirection(){return myPointDirection;}
+
+
+
+  
 }
+
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
@@ -20,18 +114,19 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   protected double myCenterX, myCenterY; //holds center coordinates   
   protected double myDirectionX, myDirectionY; //holds x and y coordinates of the vector for direction of travel   
   protected double myPointDirection; //holds current direction the ship is pointing in degrees    
-  abstract public void setX(int x)
-  abstract public int getX() 
-  abstract public void setY(int y)
-  abstract public int getY()   
-  abstract public void setDirectionX(double x)
-  abstract public double getDirectionX()
-  abstract public void setDirectionY(double y)
-  abstract public double getDirectionY()
-  abstract public void setPointDirection(int degrees)  
-  abstract public double getPointDirection()
+  abstract public void setX(int x);
+  abstract public int getX();
+  abstract public void setY(int y);
+  abstract public int getY();
+  abstract public void setDirectionX(double x);
+  abstract public double getDirectionX();
+  abstract public void setDirectionY(double y);
+  abstract public double getDirectionY();
+  abstract public void setPointDirection(int degrees);
+  abstract public double getPointDirection();
 
-  //  Accelerates the floater in the direction it is pointing (myPointDirection)   
+  // Accelerates the floater in the direction it is pointing (myPointDirection)  
+
   public void accelerate (double dAmount)   
   {          
     //convert the current direction the floater is pointing to radians    
@@ -45,7 +140,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     //rotates the floater by a given number of degrees    
     myPointDirection+=nDegreesOfRotation;   
   }   
-  public void move ()   //move the floater in the current direction of travel
+  public void move () //move the floater in the current direction of travel
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
