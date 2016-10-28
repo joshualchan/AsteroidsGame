@@ -28,22 +28,24 @@ public void draw()
 }
   public void keyPressed()
   {
-    if(key =='2')
+
+    if(key == ' ')
     {
       bob.setX((int)(Math.random()*800));
-
+      bob.setY((int)(Math.random()*800));
     }
     if(keyCode ==LEFT)
       {
-        bob.myPointDirection= bob.myPointDirection-3;
+        bob.myPointDirection= bob.myPointDirection-8;
       }
     if(keyCode ==RIGHT)
       {
-        bob.myPointDirection= bob.myPointDirection+3;
+        bob.myPointDirection= bob.myPointDirection+8;
       }
     if(keyCode ==UP)
       {
-          
+        bob.accelerate(30);
+     
       }
   }
 
