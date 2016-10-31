@@ -1,10 +1,13 @@
 //keypressed in rotate, move
 
 SpaceShip bob = new SpaceShip();
+public boolean upKey;
 Star [] stars;
 public void setup() 
 {
-  size(1000,1000);
+  size(800,800);
+  frameRate(100);
+
   stars = new Star[200];
   for(int i=0; i<stars.length; i++)
   {
@@ -23,30 +26,72 @@ public void draw()
 
 
   bob.show();
+  if(upKey == true)
+  {
 
+    bob.setX((bob.getX()+(int)bob.getDirectionX()/10));
+    bob.setY((bob.getY()+(int)bob.getDirectionY()/10));
+    bob.accelerate(.1);
+  }
+  else 
+  {
+    bob.setX((bob.getX()+(int)bob.getDirectionX()/10));
+    bob.setY((bob.getY()+(int)bob.getDirectionY()/10));
+  }
+  //wrapping
+  if(bob.getX() < 0)
+  {
+    bob.setX(800);
+  }
+  if(bob.getX() > 800)
+  {
+    bob.setX(0);
+  }  
+  if(bob.getY() < 0)
+  {
+    bob.setY(800);
+  }
+  if(bob.getY() >800)
+  {
+    bob.setY(0);
+  }
 
 }
   public void keyPressed()
   {
+    if(key == CODED)
+    {
+      if(keyCode ==LEFT)
+      {
+        bob.rotate(-8);
+      }
+      if(keyCode ==RIGHT)
+      {
+        bob.rotate(8);
+      }
+      if(keyCode ==UP)
+      {
+          upKey = true;
+      }
+    }
 
     if(key == ' ')
     {
       bob.setX((int)(Math.random()*800));
       bob.setY((int)(Math.random()*800));
+
     }
-    if(keyCode ==LEFT)
+
+  }
+  public void keyReleased()
+  {
+    if(key == CODED)
+    {
+      if(keyCode == UP)
       {
-        bob.myPointDirection= bob.myPointDirection-8;
+        upKey = false;
       }
-    if(keyCode ==RIGHT)
-      {
-        bob.myPointDirection= bob.myPointDirection+8;
-      }
-    if(keyCode ==UP)
-      {
-        bob.accelerate(30);
-     
-      }
+    }
   }
 
 class Star    
@@ -103,8 +148,6 @@ class SpaceShip extends Floater
   public double getPointDirection(){return myPointDirection;}
 
 
-
-  
 }
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
