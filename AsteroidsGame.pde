@@ -1,7 +1,7 @@
-//keypressed in rotate, move
+//fix downKey
 
 SpaceShip bob = new SpaceShip();
-public boolean upKey;
+public boolean upKey, downKey;
 Star [] stars;
 public void setup() 
 {
@@ -28,16 +28,29 @@ public void draw()
   bob.show();
   if(upKey == true)
   {
-
-    bob.setX((bob.getX()+(int)bob.getDirectionX()/10));
-    bob.setY((bob.getY()+(int)bob.getDirectionY()/10));
+    downKey = false;
+    bob.setX((bob.getX()+(int)bob.getDirectionX()));
+    bob.setY((bob.getY()+(int)bob.getDirectionY()));
     bob.accelerate(.1);
   }
   else 
   {
-    bob.setX((bob.getX()+(int)bob.getDirectionX()/10));
-    bob.setY((bob.getY()+(int)bob.getDirectionY()/10));
+    bob.setX((bob.getX()+(int)bob.getDirectionX()));
+    bob.setY((bob.getY()+(int)bob.getDirectionY()));
   }
+  /*
+  if(downKey == true)
+  {
+    bob.setX((bob.getX()-(int)bob.getDirectionX()));
+    bob.setY((bob.getY()-(int)bob.getDirectionY()));
+    bob.accelerate(.1);
+  }
+  else 
+  {
+    bob.setX((bob.getX()+(int)bob.getDirectionX()));
+    bob.setY((bob.getY()+(int)bob.getDirectionY()));
+  }
+*/
   //wrapping
   if(bob.getX() < 0)
   {
@@ -71,11 +84,16 @@ public void draw()
       }
       if(keyCode ==UP)
       {
-          upKey = true;
+        upKey = true;
       }
+      if(keyCode == DOWN)
+      {
+        downKey = true;
+      }
+
     }
 
-    if(key == ' ')
+    if(key == 'z')
     {
       bob.setX((int)(Math.random()*800));
       bob.setY((int)(Math.random()*800));
@@ -106,13 +124,10 @@ class Star
     col = color((int)(Math.random()*256));
   }   
 
-
   public void show()
   {
     fill(col);
     ellipse(myX,myY,10,10);
-    
-    
   }
 }
 class SpaceShip extends Floater  
@@ -134,8 +149,6 @@ class SpaceShip extends Floater
     myPointDirection = 0;
   }
 
-
-
   public void setX(int x){myCenterX = x;}
   public int getX(){return (int)myCenterX;} 
   public void setY(int y){myCenterY= y;}
@@ -147,8 +160,23 @@ class SpaceShip extends Floater
   public void setPointDirection(int degrees){myPointDirection = degrees;}  
   public double getPointDirection(){return myPointDirection;}
 
-
 }
+/*
+class Asteroids extends Floater
+{
+  Asteroids()
+  {
+    corners;   
+    xCorners;   
+  protected int[] yCorners;   
+  protected int myColor;   
+  protected double myCenterX, myCenterY; //holds center coordinates   
+  protected double myDirectionX, myDirectionY; //holds x and y coordinates of the vector for direction of travel   
+  protected double myPointDirection; //holds current direction the ship is pointing in degrees    
+
+  }
+}
+*/
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
