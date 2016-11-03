@@ -1,8 +1,10 @@
 //fix downKey
+// work on asteroids class
 
 SpaceShip bob = new SpaceShip();
 public boolean upKey, downKey;
 Star [] stars;
+Asteroid [] asteroids;
 public void setup() 
 {
   size(800,800);
@@ -97,6 +99,9 @@ public void draw()
     {
       bob.setX((int)(Math.random()*800));
       bob.setY((int)(Math.random()*800));
+      bob.setPointDirection((int)(Math.random()*361));
+      bob.setDirectionX(0);
+      bob.setDirectionY(0);
 
     }
 
@@ -161,22 +166,38 @@ class SpaceShip extends Floater
   public double getPointDirection(){return myPointDirection;}
 
 }
-/*
-class Asteroids extends Floater
+
+class Asteroid extends Floater
 {
-  Asteroids()
+  public Asteroid()
   {
-    corners;   
-    xCorners;   
-  protected int[] yCorners;   
-  protected int myColor;   
-  protected double myCenterX, myCenterY; //holds center coordinates   
-  protected double myDirectionX, myDirectionY; //holds x and y coordinates of the vector for direction of travel   
-  protected double myPointDirection; //holds current direction the ship is pointing in degrees    
+    
+    corners = 8;
+ 
+    int [] xS = {4,2,-2,-4,-4,-2,2,4};
+    int [] yS = {2,4,4,2,-2,-4,-4,-2};
+    xCorners = xS;
+    yCorners = yS;
+    myColor = color(175,50,50);
+    myCenterX = Math.random() * 800;
+    myCenterY = Math.random()*800;
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;
 
   }
+  public void setX(int x){myCenterX = x;}
+  public int getX(){return (int)myCenterX;} 
+  public void setY(int y){myCenterY= y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}  
+  public double getPointDirection(){return myPointDirection;}
 }
-*/
+
 
 abstract class Floater //Do NOT modify the Floater class! Make changes in the SpaceShip class 
 {   
