@@ -15,11 +15,11 @@ Suggested steps to complete this assignment
 //6. Initialize the `SpaceShip` as a new instance of the class
 //7. In `draw()` call the SpaceShip's `show()` function
 //8. When you are happy with appearance of the SpaceShip, add a `public void keyPressed()` function to your program
-9. Write code in `keyPressed` that allows you to control the space ship with the keyboard. You must include the ability to rotate left, rotate right, accelerate, and enter "hyperspace." (There is no requirement for any fancy visual effects, hyperspace just needs to stop the ship, and give it a new random position and direction.)
+//9. Write code in `keyPressed` that allows you to control the space ship with the keyboard. You must include the ability to rotate left, rotate right, accelerate, and enter "hyperspace." (There is no requirement for any fancy visual effects, hyperspace just needs to stop the ship, and give it a new random position and direction.)
 //10. Add code to `draw()` to `move()` the Spaceship
 //11. Finally, add a `Star` class that creates a random number of stars in random positions
-12. Note that for full credit, **you MUST include instructions on how to operate your SpaceShip in the `index.html` file**
-12. If you have extra time and are looking for a challenge, you might try to add an animation of "rockets" that appear from the back of the ship when you accelerate
+/12. Note that for full credit, **you MUST include instructions on how to operate your SpaceShip in the `index.html` file**
+//12. If you have extra time and are looking for a challenge, you might try to add an animation of "rockets" that appear from the back of the ship when you accelerate
 
 These steps are only a suggestion. Your Asteroids game doesn't have to work or act like any other. Have fun and be creative.
 
@@ -31,14 +31,14 @@ Now that we have a functioning space ship, we'll add some asteroids to our game.
 Steps to completing this assignment
 -----------------------------------
 
-1. Write an Asteroid class that extends Floater. Make sure it's not inside the curly braces of any other class. You will need to
+//1. Write an Asteroid class that extends Floater. Make sure it's not inside the curly braces of any other class. You will need to
 write a constructor and the code to "finish" the `abstract` methods in the Floater class
-2. Add a `int` member variable of the `Asteroid` class. It will hold the speed of rotation for each asteroid. Make sure that this is initialized to have an equal probablility of being positive or negative. Also make sure to declare it appropriately (should it be `public` or `private`?)
-3. "Override" the `move()` method of the Floater class by writing a new `move()` method in the Asteroid class that also rotates each Asteroid at its own speed
-4. Now add just a single asteroid to your applet. Start by just calling the Asteroid's `show()` function. Make sure you can see it and are happy with its shape before going to the next step.
-5. Now add the code that moves and rotates the Asteroid
-6. Modify your code so that you have an array of Asteroids.
-7. Submit the URL of your working program to the school loop locker
+//2. Add a `int` member variable of the `Asteroid` class. It will hold the speed of rotation for each asteroid. Make sure that this is initialized to have an equal probablility of being positive or negative. Also make sure to declare it appropriately (should it be `public` or `private`?)
+//3. "Override" the `move()` method of the Floater class by writing a new `move()` method in the Asteroid class that also rotates each Asteroid at its own speed
+//4. Now add just a single asteroid to your applet. Start by just calling the //Asteroid's `show()` function. Make sure you can see it and are happy with its shape before going to the next step.
+//5. Now add the code that moves and rotates the Asteroid
+//6. Modify your code so that you have an array of Asteroids.
+//7. Submit the URL of your working program to the school loop locker
 
 Extensions
 ----------

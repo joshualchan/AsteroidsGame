@@ -5,27 +5,43 @@ SpaceShip bob = new SpaceShip();
 public boolean upKey, downKey;
 Star [] stars;
 Asteroid [] asteroids;
+int health = 100;
+
 public void setup() 
 {
   size(800,800);
   frameRate(100);
 
   stars = new Star[200];
+  asteroids = new Asteroid[15];
   for(int i=0; i<stars.length; i++)
   {
     stars[i] = new Star(0,0);
 
   }
+  for(int i = 0; i<asteroids.length;i++)
+  {
+    asteroids[i] = new Asteroid();
+  }    
+    
 }
 public void draw() 
 {
   background(0);
+  fill(255);
+  text("Your HP is: " + health, 700,100);
   for(int i=0; i<stars.length; i++)
   {
     stars[i].show();
     
   }
+  for(int i = 0; i<asteroids.length;i++)
+  {
+    asteroids[i].show();
+    asteroids[i].move();
 
+
+  }
 
   bob.show();
   if(upKey == true)
@@ -40,19 +56,7 @@ public void draw()
     bob.setX((bob.getX()+(int)bob.getDirectionX()));
     bob.setY((bob.getY()+(int)bob.getDirectionY()));
   }
-  /*
-  if(downKey == true)
-  {
-    bob.setX((bob.getX()-(int)bob.getDirectionX()));
-    bob.setY((bob.getY()-(int)bob.getDirectionY()));
-    bob.accelerate(.1);
-  }
-  else 
-  {
-    bob.setX((bob.getX()+(int)bob.getDirectionX()));
-    bob.setY((bob.getY()+(int)bob.getDirectionY()));
-  }
-*/
+
   //wrapping
   if(bob.getX() < 0)
   {
@@ -71,6 +75,8 @@ public void draw()
     bob.setY(0);
   }
 
+  //collision with asteroid
+
 }
   public void keyPressed()
   {
@@ -78,11 +84,11 @@ public void draw()
     {
       if(keyCode ==LEFT)
       {
-        bob.rotate(-8);
+        bob.rotate(-10);
       }
       if(keyCode ==RIGHT)
       {
-        bob.rotate(8);
+        bob.rotate(10);
       }
       if(keyCode ==UP)
       {
@@ -169,22 +175,62 @@ class SpaceShip extends Floater
 
 class Asteroid extends Floater
 {
+  private int rSpeed;
   public Asteroid()
   {
     
     corners = 8;
  
-    int [] xS = {4,2,-2,-4,-4,-2,2,4};
-    int [] yS = {2,4,4,2,-2,-4,-4,-2};
+    int [] xS = {16,8,-8,-16,-16,-8,8,16};
+    int [] yS = {8,16,16,8,-8,-16,-16,-8};
     xCorners = xS;
     yCorners = yS;
     myColor = color(175,50,50);
     myCenterX = Math.random() * 800;
     myCenterY = Math.random()*800;
-    myDirectionX = 0;
-    myDirectionY = 0;
+    myDirectionX = (int)(Math.random()*5-2);
+    myDirectionY = (int)(Math.random()*5-2);
     myPointDirection = 0;
+    rSpeed = (int)(Math.random()*5-2);
 
+  }
+
+  public void move()
+  {
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;     
+    myPointDirection+=rSpeed;   
+    if(rSpeed == 0)
+    {
+      rSpeed = (int)(Math.random()*5-2);
+    }
+    if(myDirectionX == 0)
+    {
+      myDirectionX = (int)(Math.random()*5-2);
+    }
+
+    if(myDirectionY == 0)
+    {
+      myDirectionY = (int)(Math.random()*5-2);
+    }
+
+    //wrap around screen    
+    if(myCenterX >width)
+    {     
+      myCenterX = 0;    
+    }    
+    else if (myCenterX<0)
+    {     
+      myCenterX = width;    
+    }    
+    if(myCenterY >height)
+    {    
+      myCenterY = 0;    
+    }   
+    else if (myCenterY < 0)
+    {     
+      myCenterY = height;    
+    }      
   }
   public void setX(int x){myCenterX = x;}
   public int getX(){return (int)myCenterX;} 
