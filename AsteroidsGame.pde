@@ -5,7 +5,8 @@ SpaceShip bob = new SpaceShip();
 public boolean upKey, downKey;
 Star [] stars;
 Asteroid [] asteroids;
-int health = 100;
+Health h1 = new Health();
+int hp = 100;
 
 public void setup() 
 {
@@ -29,7 +30,7 @@ public void draw()
 {
   background(0);
   fill(255);
-  text("Your HP is: " + health, 700,100);
+  text("Your HP is: " + hp, 700,100);
   for(int i=0; i<stars.length; i++)
   {
     stars[i].show();
@@ -40,7 +41,19 @@ public void draw()
     asteroids[i].show();
     asteroids[i].move();
 
+  //check for collision
+  if(dist((float)bob.getX(), (float)bob.getY(), (float)asteroids[i].getX(), (float)asteroids[i].getY())<20)
+  {
+    hp--;
+  }
 
+  }
+  h1.show();
+  if(dist((float)bob.getX(), (float)bob.getY(), (float)h1.getX(), (float)h1.getY())<30)
+  {
+    h1.setX((int)(Math.random()*800));
+    h1.setY((int)(Math.random()*800));
+    hp = hp+5;
   }
 
   bob.show();
@@ -75,7 +88,6 @@ public void draw()
     bob.setY(0);
   }
 
-  //collision with asteroid
 
 }
   public void keyPressed()
@@ -122,6 +134,29 @@ public void draw()
       }
     }
   }
+
+
+public class Health
+{
+  int myX,myY;
+  Health()
+  {
+    myX = (int)(Math.random()*800);
+    myY = (int)(Math.random()*800);
+  }
+
+  public void setX(int x){myX = x;}
+  public int getX(){return (int)myX;} 
+  public void setY(int y){myY= y;}
+  public int getY(){return (int)myY;}
+
+  void show()
+  {
+    fill(0,255,0);
+    ellipse(myX,myY,30,30);
+  }
+
+}
 
 class Star    
  {     
