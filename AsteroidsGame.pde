@@ -4,7 +4,8 @@
 SpaceShip bob = new SpaceShip();
 public boolean upKey, downKey;
 Star [] stars;
-Asteroid [] asteroids;
+//Asteroid [] asteroids;
+ArrayList <Asteroid> asteroids;
 Health h1 = new Health();
 int hp = 100;
 
@@ -14,17 +15,28 @@ public void setup()
   frameRate(100);
 
   stars = new Star[200];
-  asteroids = new Asteroid[15];
+  //asteroids = new Asteroid[15];
   for(int i=0; i<stars.length; i++)
   {
     stars[i] = new Star(0,0);
 
   }
+
+// initializing the arraylist
+  asteroids = new ArrayList <Asteroid>();
+
+//adding asteroids to the arraylist
+  for(int i = 0; i<15 ; i++)
+  {
+    asteroids.add(i, new Asteroid());
+  }
+
+  /*
   for(int i = 0; i<asteroids.length;i++)
   {
     asteroids[i] = new Asteroid();
   }    
-    
+   */ 
 }
 public void draw() 
 {
@@ -36,24 +48,29 @@ public void draw()
     stars[i].show();
     
   }
-  for(int i = 0; i<asteroids.length;i++)
+  for(int i = 0; i<asteroids.size();i++)
   {
-    asteroids[i].show();
-    asteroids[i].move();
+    asteroids.get(i).show();
+    asteroids.get(i).move();
+    
+    //check for collision
+    if(dist((float)bob.getX(), (float)bob.getY(), (float)asteroids.get(i).getX(), (float)asteroids.get(i).getY())<20)
+    {
+      asteroids.remove(i);
+      hp--;
 
-  //check for collision
-  if(dist((float)bob.getX(), (float)bob.getY(), (float)asteroids[i].getX(), (float)asteroids[i].getY())<20)
-  {
-    hp--;
+    }
+    
   }
+  
 
-  }
+  
   h1.show();
   if(dist((float)bob.getX(), (float)bob.getY(), (float)h1.getX(), (float)h1.getY())<30)
   {
     h1.setX((int)(Math.random()*800));
     h1.setY((int)(Math.random()*800));
-    hp = hp+5;
+    hp +=5;
   }
 
   bob.show();
@@ -136,7 +153,7 @@ public void draw()
   }
 
 
-public class Health
+class Health
 {
   int myX,myY;
   Health()
@@ -158,6 +175,8 @@ public class Health
 
 }
 
+
+
 class Star    
  {     
   private int myX, myY,col;
@@ -176,6 +195,9 @@ class Star
     ellipse(myX,myY,10,10);
   }
 }
+
+
+
 class SpaceShip extends Floater  
 {  
 
