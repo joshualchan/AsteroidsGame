@@ -1,11 +1,12 @@
 //fix downKey
-// work on asteroids class
-
+//remove bullets from the arraylist
+boolean bShow = false;
 SpaceShip bob = new SpaceShip();
 public boolean upKey, downKey;
 Star [] stars;
 //Asteroid [] asteroids;
 ArrayList <Asteroid> asteroids;
+ArrayList <Bullet> bullets;
 Health h1 = new Health();
 int hp = 100;
 
@@ -24,7 +25,7 @@ public void setup()
 
 // initializing the arraylist
   asteroids = new ArrayList <Asteroid>();
-
+  bullets = new ArrayList <Bullet>();
 //adding asteroids to the arraylist
   for(int i = 0; i<15 ; i++)
   {
@@ -43,28 +44,57 @@ public void draw()
   background(0);
   fill(255);
   text("Your HP is: " + hp, 700,100);
+
+  //loop through star array calling the show function for each one
   for(int i=0; i<stars.length; i++)
   {
     stars[i].show();
     
   }
+
+//show asteroids in the arraylist
   for(int i = 0; i<asteroids.size();i++)
   {
     asteroids.get(i).show();
     asteroids.get(i).move();
     
-    //check for collision
+    //check for collision (asteroids and spaceship)
     if(dist((float)bob.getX(), (float)bob.getY(), (float)asteroids.get(i).getX(), (float)asteroids.get(i).getY())<20)
     {
-      asteroids.remove(i);
       hp--;
-
     }
+  
     
+  }
+
+    //check for collision (asteroids and bullets)  
+    for(int i = 0; i<asteroids.size();i++)
+    {
+      for(int j=0; j<bullets.size();j++)
+      {
+
+        if(dist((float)asteroids.get(i).getX(), (float)asteroids.get(i).getY(), (float)bullets.get(j).getX(),(float)bullets.get(j).getY())<35)
+        {
+        asteroids.remove(i);
+        bullets.remove(j);
+        asteroids.add(new Asteroid());
+      }
+      }
+    }
+
+  
+//if spacebar is pressed, show and move the bullet
+  if(bShow = true)
+  {
+    for(int i=0; i<bullets.size();i++)
+    {
+      bullets.get(i).show();
+      bullets.get(i).move();
+    }
   }
   
 
-  
+  //show health and move when there's a collision
   h1.show();
   if(dist((float)bob.getX(), (float)bob.getY(), (float)h1.getX(), (float)h1.getY())<30)
   {
@@ -73,6 +103,8 @@ public void draw()
     hp +=5;
   }
 
+
+//show spaceship and make arrow keys work
   bob.show();
   if(upKey == true)
   {
@@ -86,6 +118,7 @@ public void draw()
     bob.setX((bob.getX()+(int)bob.getDirectionX()));
     bob.setY((bob.getY()+(int)bob.getDirectionY()));
   }
+
 
   //wrapping
   if(bob.getX() < 0)
@@ -139,6 +172,14 @@ public void draw()
       bob.setDirectionY(0);
 
     }
+
+    if(key == ' ')
+    {
+      bullets.add(new Bullet(bob));
+      bShow = true;
+
+    }
+
 
   }
   public void keyReleased()
@@ -299,6 +340,52 @@ class Asteroid extends Floater
   public double getDirectionY(){return myDirectionY;}
   public void setPointDirection(int degrees){myPointDirection = degrees;}  
   public double getPointDirection(){return myPointDirection;}
+}
+
+
+class Bullet extends Floater
+{
+  private double dRadians;
+  public Bullet(SpaceShip theShip)
+  {
+    myCenterX = theShip.getX();
+    myCenterY = theShip.getY();
+    myPointDirection = theShip.getPointDirection();
+    dRadians =myPointDirection*(Math.PI/180);
+    myDirectionX= 5 * Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY= 5 * Math.sin(dRadians) + theShip.getDirectionY();
+
+  }
+
+
+
+
+  public void show()
+  {
+    fill(255);
+    ellipse((int)myCenterX,(int)myCenterY,10,10);
+  }  
+
+  public void move()
+  {
+    myCenterX += myDirectionX;    
+    myCenterY += myDirectionY;      
+  }
+
+
+
+
+  public void setX(int x){myCenterX = x;}
+  public int getX(){return (int)myCenterX;} 
+  public void setY(int y){myCenterY= y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}  
+  public double getPointDirection(){return myPointDirection;}
+
 }
 
 
