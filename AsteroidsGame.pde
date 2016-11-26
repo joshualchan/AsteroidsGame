@@ -1,5 +1,6 @@
 //fix downKey
-//remove bullets from the arraylist
+
+
 boolean bShow = false;
 SpaceShip bob = new SpaceShip();
 public boolean upKey, downKey;
@@ -9,6 +10,7 @@ ArrayList <Asteroid> asteroids;
 ArrayList <Bullet> bullets;
 Health h1 = new Health();
 int hp = 100;
+int score = 0;
 
 public void setup() 
 {
@@ -20,12 +22,12 @@ public void setup()
   for(int i=0; i<stars.length; i++)
   {
     stars[i] = new Star(0,0);
-
   }
 
 // initializing the arraylist
   asteroids = new ArrayList <Asteroid>();
   bullets = new ArrayList <Bullet>();
+
 //adding asteroids to the arraylist
   for(int i = 0; i<15 ; i++)
   {
@@ -43,7 +45,10 @@ public void draw()
 {
   background(0);
   fill(255);
+
+  //display hp and score
   text("Your HP is: " + hp, 700,100);
+  text("Your Score is: " + score,600, 150);
 
   //loop through star array calling the show function for each one
   for(int i=0; i<stars.length; i++)
@@ -78,6 +83,7 @@ public void draw()
         asteroids.remove(i);
         bullets.remove(j);
         asteroids.add(new Asteroid());
+        score += 10;
       }
       }
     }
@@ -94,7 +100,7 @@ public void draw()
   }
   
 
-  //show health and move when there's a collision
+  //show health and move the health when there's a collision
   h1.show();
   if(dist((float)bob.getX(), (float)bob.getY(), (float)h1.getX(), (float)h1.getY())<30)
   {
@@ -108,7 +114,7 @@ public void draw()
   bob.show();
   if(upKey == true)
   {
-    downKey = false;
+
     bob.setX((bob.getX()+(int)bob.getDirectionX()));
     bob.setY((bob.getY()+(int)bob.getDirectionY()));
     bob.accelerate(.1);
@@ -117,6 +123,18 @@ public void draw()
   {
     bob.setX((bob.getX()+(int)bob.getDirectionX()));
     bob.setY((bob.getY()+(int)bob.getDirectionY()));
+  }
+
+  if(downKey == true)
+  {
+    //bob.setX((bob.getX()+(-(int)bob.getDirectionX())));
+    //bob.setY((bob.getY()+(-(int)bob.getDirectionY())));  
+    bob.accelerate(-.1);
+  }
+  else
+  {
+    bob.setX((bob.getX()+(int)bob.getDirectionX()));
+    bob.setY((bob.getY()+(int)bob.getDirectionY()));    
   }
 
 
@@ -139,9 +157,37 @@ public void draw()
   }
 
 
+  if(hp<1)
+  {
+    noLoop();
+    endScreen();
+  }
+
 }
+
+  public void endScreen()
+  {
+    background(0);
+    text("Your Final Score Is: " + score, 400,400);
+    rect(350,450,100,50);
+    fill(255,0,0);
+    textSize(30);
+    text("Restart",365,480);
+  }
+/*
+  public void mouseClicked()
+  {
+    if(mouseX>350 && mouseX<450 && mouseY>450 && mouseY<500)
+    {
+      draw();
+    }
+  }
+*/
+
   public void keyPressed()
   {
+
+    //arrow keys
     if(key == CODED)
     {
       if(keyCode ==LEFT)
@@ -163,6 +209,7 @@ public void draw()
 
     }
 
+    //hyperspace
     if(key == 'z')
     {
       bob.setX((int)(Math.random()*800));
@@ -173,6 +220,7 @@ public void draw()
 
     }
 
+    //shoot bullets with spacebar
     if(key == ' ')
     {
       bullets.add(new Bullet(bob));
@@ -189,6 +237,11 @@ public void draw()
       if(keyCode == UP)
       {
         upKey = false;
+      }
+
+      if(keyCode == DOWN)
+      {
+        downKey = false;
       }
     }
   }
@@ -424,7 +477,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     //rotates the floater by a given number of degrees    
     myPointDirection+=nDegreesOfRotation;   
   }   
-  public void move () //move the floater in the current direction of travel
+  public void move () // move the floater in the current direction of travel
   {      
     //change the x and y coordinates by myDirectionX and myDirectionY       
     myCenterX += myDirectionX;    
