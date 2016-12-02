@@ -1,19 +1,30 @@
-//fix downKey
-
-
+//fix mousePressed
+//66
+boolean endS;
+boolean bWeapon = true;
 boolean bShow = false;
-SpaceShip bob = new SpaceShip();
-public boolean upKey, downKey;
-Star [] stars;
-//Asteroid [] asteroids;
-ArrayList <Asteroid> asteroids;
-ArrayList <Bullet> bullets;
-Health h1 = new Health();
+boolean lShow = false;
+boolean upKey, downKey;
+
+
 int hp = 100;
 int score = 0;
 
+
+
+Star [] stars;
+SpaceShip bob = new SpaceShip();
+Health h1 = new Health();
+
+
+ArrayList <Asteroid> asteroids;
+ArrayList <Bullet> bullets;
+ArrayList <Laser> l1;
+
+
 public void setup() 
 {
+  endS = false;
   size(800,800);
   frameRate(100);
 
@@ -24,9 +35,11 @@ public void setup()
     stars[i] = new Star(0,0);
   }
 
-// initializing the arraylist
+// initializing the arraylists
   asteroids = new ArrayList <Asteroid>();
   bullets = new ArrayList <Bullet>();
+  l1 = new ArrayList <Laser>();
+
 
 //adding asteroids to the arraylist
   for(int i = 0; i<15 ; i++)
@@ -43,6 +56,8 @@ public void setup()
 }
 public void draw() 
 {
+
+
   background(0);
   fill(255);
 
@@ -64,7 +79,7 @@ public void draw()
     asteroids.get(i).move();
     
     //check for collision (asteroids and spaceship)
-    if(dist((float)bob.getX(), (float)bob.getY(), (float)asteroids.get(i).getX(), (float)asteroids.get(i).getY())<20)
+    if(dist((float)bob.getX(), (float)bob.getY(), (float)asteroids.get(i).getX(), (float)asteroids.get(i).getY())<23)
     {
       hp--;
     }
@@ -90,7 +105,7 @@ public void draw()
 
   
 //if spacebar is pressed, show and move the bullet
-  if(bShow = true)
+  if(bShow == true)
   {
     for(int i=0; i<bullets.size();i++)
     {
@@ -98,6 +113,15 @@ public void draw()
       bullets.get(i).move();
     }
   }
+
+  if(lShow == true)
+    {
+      for(int i = 0 ; i<l1.size() ; i++)
+      {
+        l1.get(i).show();
+      }
+    
+    }
   
 
   //show health and move the health when there's a collision
@@ -110,14 +134,15 @@ public void draw()
   }
 
 
+
 //show spaceship and make arrow keys work
   bob.show();
   if(upKey == true)
   {
 
-    bob.setX((bob.getX()+(int)bob.getDirectionX()));
-    bob.setY((bob.getY()+(int)bob.getDirectionY()));
-    bob.accelerate(.1);
+    //bob.setX((bob.getX()+(int)bob.getDirectionX()));
+    //bob.setY((bob.getY()+(int)bob.getDirectionY()));
+    bob.accelerate(.15);
   }
   else 
   {
@@ -129,7 +154,7 @@ public void draw()
   {
     //bob.setX((bob.getX()+(-(int)bob.getDirectionX())));
     //bob.setY((bob.getY()+(-(int)bob.getDirectionY())));  
-    bob.accelerate(-.1);
+    bob.accelerate(-.15);
   }
   else
   {
@@ -157,32 +182,73 @@ public void draw()
   }
 
 
-  if(hp<1)
+
+  if(hp<50)
   {
     noLoop();
     endScreen();
   }
 
+
+
 }
+
+public void draw2()
+{
+
+}
+
 
   public void endScreen()
   {
+    endS = true;
+
     background(0);
-    text("Your Final Score Is: " + score, 400,400);
+    textSize(25);
+    text("Your Final Score Is: " + score, 250,400);
     rect(350,450,100,50);
     fill(255,0,0);
-    textSize(30);
-    text("Restart",365,480);
+    
+    text("Restart",355,485);
+
   }
-/*
-  public void mouseClicked()
+
+  public void mousePressed()
   {
-    if(mouseX>350 && mouseX<450 && mouseY>450 && mouseY<500)
-    {
-      draw();
+    if(mouseX>350 && mouseX<450 && mouseY>450 && mouseY<500 && endS == true )
+    {      
+      textSize(15);
+
+      //reinitialize variables
+endS = false;
+
+bWeapon = true;
+bShow = false;
+lShow = false;
+
+
+
+hp = 100;
+score = 0;
+
+
+
+Star [] stars;
+SpaceShip bob = new SpaceShip();
+Health h1 = new Health();
+
+
+ArrayList <Asteroid> asteroids;
+ArrayList <Bullet> bullets;
+ArrayList <Laser> l1;
+
+
+      setup();
+      redraw();
+      
     }
   }
-*/
+
 
   public void keyPressed()
   {
@@ -220,17 +286,42 @@ public void draw()
 
     }
 
-    //shoot bullets with spacebar
-    if(key == ' ')
+    //switch weapon
+    if(key == 'x')
     {
-      bullets.add(new Bullet(bob));
-      bShow = true;
+      if(bWeapon == true)
+      {
+        //weapon switches to lightning
+        bWeapon = false;
+      }
+      else 
+      {
+        bWeapon = true;
+      }
 
     }
 
 
+    //shoot bullets or lasers with spacebar
+    if(key == ' ')
+    {
+      if(bWeapon == true)
+      {
+        bullets.add(new Bullet(bob));
+        bShow = true;        
+      }
+
+      else
+      {
+
+        l1.add(new Laser(bob));
+        lShow = true;
+      }
+      }
+
   }
-  public void keyReleased()
+  public void keyReleased() //when up/down is released, inertia
+  // when spacebar released when weapon is laser, lShow is false
   {
     if(key == CODED)
     {
@@ -244,85 +335,14 @@ public void draw()
         downKey = false;
       }
     }
+    /*
+    if(key == ' ' && lShow == true)
+    {
+      lShow = false;        
+    }
+    */
   }
 
-
-class Health
-{
-  int myX,myY;
-  Health()
-  {
-    myX = (int)(Math.random()*800);
-    myY = (int)(Math.random()*800);
-  }
-
-  public void setX(int x){myX = x;}
-  public int getX(){return (int)myX;} 
-  public void setY(int y){myY= y;}
-  public int getY(){return (int)myY;}
-
-  void show()
-  {
-    fill(0,255,0);
-    ellipse(myX,myY,30,30);
-  }
-
-}
-
-
-
-class Star    
- {     
-  private int myX, myY,col;
-
-  public Star (int x, int y)
-  {
-
-    myX = (int)(Math.random()*1000);
-    myY = (int)(Math.random()*1000);
-    col = color((int)(Math.random()*256));
-  }   
-
-  public void show()
-  {
-    fill(col);
-    ellipse(myX,myY,10,10);
-  }
-}
-
-
-
-class SpaceShip extends Floater  
-{  
-
-  public SpaceShip()
-  {
-    corners = 6;
- 
-    int [] xS = {20,-10,-20,-14,-20,-10};
-    int [] yS = {0,12,12,0,-12,-12};
-    xCorners = xS;
-    yCorners = yS;
-    myColor = color(255);
-    myCenterX = 500;
-    myCenterY = 500;
-    myDirectionX = 0;
-    myDirectionY = 0;
-    myPointDirection = 0;
-  }
-
-  public void setX(int x){myCenterX = x;}
-  public int getX(){return (int)myCenterX;} 
-  public void setY(int y){myCenterY= y;}
-  public int getY(){return (int)myCenterY;}
-  public void setDirectionX(double x){myDirectionX = x;}
-  public double getDirectionX(){return myDirectionX;}
-  public void setDirectionY(double y){myDirectionY = y;}
-  public double getDirectionY(){return myDirectionY;}
-  public void setPointDirection(int degrees){myPointDirection = degrees;}  
-  public double getPointDirection(){return myPointDirection;}
-
-}
 
 class Asteroid extends Floater
 {
@@ -411,8 +431,6 @@ class Bullet extends Floater
   }
 
 
-
-
   public void show()
   {
     fill(255);
@@ -426,7 +444,99 @@ class Bullet extends Floater
   }
 
 
+  public void setX(int x){myCenterX = x;}
+  public int getX(){return (int)myCenterX;} 
+  public void setY(int y){myCenterY= y;}
+  public int getY(){return (int)myCenterY;}
+  public void setDirectionX(double x){myDirectionX = x;}
+  public double getDirectionX(){return myDirectionX;}
+  public void setDirectionY(double y){myDirectionY = y;}
+  public double getDirectionY(){return myDirectionY;}
+  public void setPointDirection(int degrees){myPointDirection = degrees;}  
+  public double getPointDirection(){return myPointDirection;}
 
+}
+
+
+
+class Health 
+{
+  private int myX,myY;
+  public Health()
+  {
+    myX = (int)(Math.random()*800);
+    myY = (int)(Math.random()*800);
+  }
+
+  public void setX(int x){myX = x;}
+  public int getX(){return (int)myX;} 
+  public void setY(int y){myY= y;}
+  public int getY(){return (int)myY;}
+
+  public void show()
+  {
+    strokeWeight(1);
+    fill(0,255,0);
+    ellipse(myX,myY,30,30);
+  }
+
+}
+
+
+
+class Laser
+{
+  private int myCenterX, myCenterY;
+  private int a,b;
+
+  public Laser(SpaceShip theShip)
+  {
+    myCenterX = theShip.getX();
+    myCenterY = theShip.getY();
+    a  = (int)(Math.random()*50)-25;
+    b = (int)(Math.random()*50)-25; 
+  }
+
+  public void show()
+  {
+    strokeWeight(5);
+    stroke((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
+
+    line(myCenterX, myCenterY,myCenterX+a, myCenterY-b);
+
+    myCenterX = myCenterX + a ;
+    myCenterY = myCenterY - b ;
+
+    for(int i = 0 ; i<asteroids.size() ; i++)
+    {
+      fill(255,0,0);
+      noStroke();
+      line(myCenterX,myCenterY, asteroids.get(i).getX(), asteroids.get(i).getY());
+    }
+  
+  }
+}
+
+
+
+class SpaceShip extends Floater  
+{  
+
+  public SpaceShip()
+  {
+    corners = 6;
+ 
+    int [] xS = {20,-10,-20,-14,-20,-10};
+    int [] yS = {0,12,12,0,-12,-12};
+    xCorners = xS;
+    yCorners = yS;
+    myColor = color(255);
+    myCenterX = 500;
+    myCenterY = 500;
+    myDirectionX = 0;
+    myDirectionY = 0;
+    myPointDirection = 0;
+  }
 
   public void setX(int x){myCenterX = x;}
   public int getX(){return (int)myCenterX;} 
@@ -439,6 +549,27 @@ class Bullet extends Floater
   public void setPointDirection(int degrees){myPointDirection = degrees;}  
   public double getPointDirection(){return myPointDirection;}
 
+}
+
+
+
+class Star    
+ {     
+  private int myX, myY,col;
+
+  public Star (int x, int y)
+  {
+
+    myX = (int)(Math.random()*1000);
+    myY = (int)(Math.random()*1000);
+    col = color((int)(Math.random()*256));
+  }   
+
+  public void show()
+  {
+    fill(col);
+    ellipse(myX,myY,10,10);
+  }
 }
 
 
