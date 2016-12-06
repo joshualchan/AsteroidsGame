@@ -1,5 +1,7 @@
-//fix mousePressed
-//66
+
+//show weapon = false when endscreen
+
+
 boolean endS;
 boolean bWeapon = true;
 boolean bShow = false;
@@ -9,7 +11,6 @@ boolean upKey, downKey;
 
 int hp = 100;
 int score = 0;
-
 
 
 Star [] stars;
@@ -103,6 +104,23 @@ public void draw()
       }
     }
 
+
+//collision asteroids and laser
+    for(int i = 0; i< l1.size() ; i++)
+    {
+
+      for(int j = 0 ; j<asteroids.size() ; j++)
+      {
+        if(dist(l1.get(i).getX(), l1.get(i).getY(), (float)asteroids.get(j).getX(), (float)asteroids.get(j).getY())<17.89)
+        {
+          asteroids.remove(j);
+          asteroids.add(new Asteroid());
+          score +=10;
+        }
+      }
+    }
+ 
+
   
 //if spacebar is pressed, show and move the bullet
   if(bShow == true)
@@ -183,18 +201,12 @@ public void draw()
 
 
 
-  if(hp<50)
+  if(hp<1)
   {
-    noLoop();
     endScreen();
   }
 
 
-
-}
-
-public void draw2()
-{
 
 }
 
@@ -217,35 +229,15 @@ public void draw2()
   {
     if(mouseX>350 && mouseX<450 && mouseY>450 && mouseY<500 && endS == true )
     {      
-      textSize(15);
+      textSize(10);
 
       //reinitialize variables
-endS = false;
+      endS = false;
 
-bWeapon = true;
-bShow = false;
-lShow = false;
+      hp = 100;
+      score = 0;
 
-
-
-hp = 100;
-score = 0;
-
-
-
-Star [] stars;
-SpaceShip bob = new SpaceShip();
-Health h1 = new Health();
-
-
-ArrayList <Asteroid> asteroids;
-ArrayList <Bullet> bullets;
-ArrayList <Laser> l1;
-
-
-      setup();
       redraw();
-      
     }
   }
 
@@ -488,6 +480,8 @@ class Laser
 {
   private int myCenterX, myCenterY;
   private int a,b;
+  private double angle;
+
 
   public Laser(SpaceShip theShip)
   {
@@ -495,10 +489,13 @@ class Laser
     myCenterY = theShip.getY();
     a  = (int)(Math.random()*50)-25;
     b = (int)(Math.random()*50)-25; 
+
   }
 
   public void show()
   {
+
+
     strokeWeight(5);
     stroke((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
 
@@ -507,14 +504,12 @@ class Laser
     myCenterX = myCenterX + a ;
     myCenterY = myCenterY - b ;
 
-    for(int i = 0 ; i<asteroids.size() ; i++)
-    {
-      fill(255,0,0);
-      noStroke();
-      line(myCenterX,myCenterY, asteroids.get(i).getX(), asteroids.get(i).getY());
-    }
-  
   }
+
+  public void setX(int x){myCenterX = x;}
+  public int getX(){return (int)myCenterX;} 
+  public void setY(int y){myCenterY= y;}
+  public int getY(){return (int)myCenterY;}
 }
 
 
