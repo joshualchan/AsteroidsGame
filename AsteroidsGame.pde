@@ -160,7 +160,7 @@ public void draw()
 
     //bob.setX((bob.getX()+(int)bob.getDirectionX()));
     //bob.setY((bob.getY()+(int)bob.getDirectionY()));
-    bob.accelerate(.15);
+    bob.accelerate(.10);
   }
   else 
   {
@@ -172,7 +172,7 @@ public void draw()
   {
     //bob.setX((bob.getX()+(-(int)bob.getDirectionX())));
     //bob.setY((bob.getY()+(-(int)bob.getDirectionY())));  
-    bob.accelerate(-.15);
+    bob.accelerate(-.10);
   }
   else
   {
