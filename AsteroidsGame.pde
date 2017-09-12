@@ -63,7 +63,8 @@ public void draw()
   fill(255);
 
   //display hp and score
-  text("Your HP is: " + hp, 700,100);
+  textSize(20);
+  text("Your HP is: " + hp, 600,100);
   text("Your Score is: " + score,600, 150);
 
   //loop through star array calling the show function for each one
@@ -417,8 +418,8 @@ class Bullet extends Floater
     myCenterY = theShip.getY();
     myPointDirection = theShip.getPointDirection();
     dRadians =myPointDirection*(Math.PI/180);
-    myDirectionX= 5 * Math.cos(dRadians) + theShip.getDirectionX();
-    myDirectionY= 5 * Math.sin(dRadians) + theShip.getDirectionY();
+    myDirectionX= 4 * Math.cos(dRadians) + theShip.getDirectionX();
+    myDirectionY= 4 * Math.sin(dRadians) + theShip.getDirectionY();
 
   }
 
@@ -487,8 +488,8 @@ class Laser
   {
     myCenterX = theShip.getX();
     myCenterY = theShip.getY();
-    a  = (int)(Math.random()*50)-25;
-    b = (int)(Math.random()*50)-25; 
+    a  = (int)(Math.random()*16)-8;
+    b = (int)(Math.random()*16)-8; 
 
   }
 
@@ -496,7 +497,7 @@ class Laser
   {
 
 
-    strokeWeight(5);
+    strokeWeight(4);
     stroke((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
 
     line(myCenterX, myCenterY,myCenterX+a, myCenterY-b);
@@ -645,4 +646,3 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     endShape(CLOSE);  
   }   
 } 
-
